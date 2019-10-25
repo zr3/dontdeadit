@@ -8712,7 +8712,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e3bd66e7e04b1e841810d7ff3c54c646, type: 2}
   - {fileID: 11400000, guid: 28c085b34eff7c046bb587652163efe6, type: 2}
   - {fileID: 11400000, guid: ec117e0d9aa5d9146b70feda6fde9f9b, type: 2}
-  - {fileID: 11400000, guid: 28c085b34eff7c046bb587652163efe6, type: 2}
+  - {fileID: 11400000, guid: c791d113a58d68a4eadf5eb90ee4d228, type: 2}
+  AmbientClips:
+  - {fileID: 8300000, guid: c4223a64e26a97047ae84e870cd4387e, type: 3}
   OnClipScheduled:
     m_PersistentCalls:
       m_Calls: []
