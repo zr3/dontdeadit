@@ -1,118 +1,39 @@
-# game peanutbutters
+# don't dead it
 
-goes great with game jams!
+a short game made for ludum dare 46 - 'keep it alive'
 
-## features
+## controls
 
-this project provides a framework for unity games, which can be used for game jams. it is a collection of boilerplate that i find myself implementing over and over again. it does not contain anything but the most basic assets, so that you can focus on implementing the game itself.
+point and click
 
-- basic unity ui menus with a theming asset
-- dialog system
-- simple motion components
-- build and export script
-- screenshotter
-- basic juice components
-- basic camera components
-- basic sound components
-- extra math utilities
-- screen fading
-- checkpoints
+bars at edges of screen are for navigation
 
-### screen fading
+button under clock returns to it
 
-use `ScreenFader` to easily fade the screen in and out for some simple polish. it is a singleton component with a static interface, so it can be called anywhere in your code.
+space skips messages
 
-#### simple example
+## description
 
-this will fade the screen to black (or whatever image/color you set up on the `FadeCanvas/Fader` image component):
+i wanted to make an art project that was also kind of a game. it's basically a tamagotchi -- feed it different types of food and wait a few minutes to see what it grows into. there is a different adult stage for each kind of food!
 
-```
-ScreenFader.FadeOut();
-````
-
-#### less simple example
-
-this will wait 1 second, fade the screen in, wait another 1.2 seconds, then instantiate "SomeRandomPrefab":
-
-```
-ScreenFader.FadeInThen(
-    () => Instantiate(SomeRandomPrefab),
-    1f, 1.2f
-);
-```
-
-see the C# documentation if you are unfamiliar with lambda/arrow syntax. these methods take `Action`s, so you could also pass them parameterless methods directly:
-
-```
-ScreenFader.FadeInThen(Screenshotter.Shoot);
-```
-
-could also hook up `UnityEvent`s to this fairly easily. for example by having the `GameConductor` expose some `UnityEvent` parameters and running them after fading when there are game mode state changes.
-
-## usage
-
-clone repo, add folder in unity hub?
-run a script to set up name?
-add dependency to `Packages/manifest.json`?
-
-## game framework
-
-this project sets up a basic game framework that implements a very basic but full game loop:
-
-- `Game.scene` is initially loaded.
-- `Title.scene` is optionally additively loaded on game start and is controlled by `GameConductor`
-
-## music box
-
-```
-Menu Music
-1...2...3...4...
-I       V
-B               E
-
-Simple looping music
-1...2...3...4...5...6...7...8...
-I                               V
-B               E               E
-
-Music piece with overlapping intro (e.g. ramp-up sounds)
-1...2...3...4...5...6...7...8...9...
-    I                               V
-    B               E               E
-
-Music piece with intro on-time (e.g. boss music chime)
-1...2...3...4...5...6...7...8...9...10..
-        I                               V
-B                       E               E
-
-```
-
-## jam checklist
-
-don't forget to do these things!
-
-- 🥜 update your company name, product name, icons, cursor
-- 🥜 update splash image
-- 🥜 bake lighting, if needed
-- 🥜 take screenshots
-- 🥜 keep track of the credit for third party resources
-- 🥜 have some fun
+originally intended for this to also be a dragon-based mmo (not science-based, i'm not crazy). but i decided to try polishing a project for once, instead of cramming in async multiplayer. would have been cool though, i wanted to make it have a lifespan of hours instead of minutes, and let anyone playing feed everyone else's pets c:
 
 ## credit
 
-- legacy sobel edge detection effect by Unity, ported by [jean-moreno](https://github.com/jean-moreno/EdgeDetect-PostProcessingUnity), and packaged by [popcron](https://github.com/popcron/pp-edge-detection)
-- peanutbutters icon derived from one made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](https://www.flaticon.com)
 - nohidea idk pack
-- soniss.com gdc bundle
+- gaegu font
+- [gamepeanutbutters](https://github.com/zr3/gamepeanutbutters) base code
 
-### games that led to this
+## tools
 
-- z88.inject
-- Crankship Courier
-- FEED
-- Sail for Nothing
+krita for art
 
-## roadmap
+fl studio, sytrus, blue yeti microphone, cheap guitar, various random objects around my house for sound
 
-- add support for the new Input System
-- use Playables for the music box
+unity and related packages, like cinemachine and gamepeanutbutters, for code
+
+animal crossing lofi hiphop for inspiration and joy
+
+## gamepeanutbutters
+
+this is a set of basecode that i made last year to gather together boilerplate and features that i was reimplementing every LD. this was my first trial run actually using it in a project, and it actually went pretty well, aside from losing a few hours to an unexpected bug that turned out to be in the base code, and not sticking to the architecture very well. i think i'll elaborate on it in a blog post
