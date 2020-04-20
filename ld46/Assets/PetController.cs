@@ -21,8 +21,33 @@ public class PetController : MonoBehaviour
     public GameObject FoodMenu;
     public GameObject[] FoodButtons;
 
+    public AudioClip CloseMenuClip;
+
+    public int InitialFullness = 10;
     public int FullnessTolerance = 30;
     public int FullnessDeath => FullnessTolerance * 3;
+    public int MinutesSpentAsChild = 5;
+    public int MinutesSpentDead = 5;
+    public int TimeStepInSeconds = 15;
+
+    public void Start()
+    {
+        StartCoroutine(TimeLoop());
+    }
+
+    private IEnumerator TimeLoop()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(TimeStepInSeconds);
+            TimeStep();
+        }
+    }
+
+    public void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 
     public void OnGrowthStageChanged(int newStage)
     {
@@ -77,26 +102,41 @@ public class PetController : MonoBehaviour
     {
         int pokes = DataDump.Get<int>("LocalPetPokes") + 1;
         DataDump.Set("LocalPetPokes", pokes);
-        if (DataDump.Get<int>("LocalPetGrowthStage") == 0) {
-            if (pokes > 5)
-            {
-                DataDump.Set("LocalPetGrowthStage", 1);
-            }
-            return;
-        }
-        if (FoodMenu.activeSelf)
+        var stage = (GrowthStage)DataDump.Get<int>("LocalPetGrowthStage");
+        switch (stage)
         {
-            CloseFoodMenu();
-        } else
-        {
-            SetFoodMenu();
-            OpenFoodMenu();
+            case GrowthStage.Egg:
+                Juicer.Instance.PlayPickSFX();
+                if (pokes > 5)
+                {
+                    DataDump.Set("LocalPetGrowthStage", 1);
+                }
+                break;
+            case GrowthStage.Baby:
+            case GrowthStage.Juvi:
+                if (FoodMenu.activeSelf)
+                {
+                    CloseFoodMenu();
+                    Juicer.Instance.PlayNaturalClip(CloseMenuClip);
+                }
+                else
+                {
+                    SetFoodMenu();
+                    OpenFoodMenu();
+                    Juicer.Instance.PlayPickSFX();
+                }
+                break;
+            case GrowthStage.Pheonix:
+                Juicer.Instance.PlayPickSFX();
+                StartCoroutine(Rebirth());
+                break;
         }
     }
 
     public void Feed(int type)
     {
         CloseFoodMenu();
+        Juicer.Instance.PlayEatSFX();
         int foodLeft = DataDump.Get<int>(((FoodType)type).ToString()) - 1;
         DataDump.Set<int>(((FoodType)type).ToString(), foodLeft);
         string dataName = $"LocalPet{((FoodType)type).ToString()}Eaten";
@@ -107,7 +147,7 @@ public class PetController : MonoBehaviour
         if (fullness > FullnessDeath)
         {
             // go to the die
-            DataDump.Set("LocalPetGrowthStage", (int)GrowthStage.Dead);
+            StartCoroutine(Die());
             return;
         }
         if (fullness > FullnessTolerance)
@@ -117,18 +157,40 @@ public class PetController : MonoBehaviour
 
     }
 
+    private System.DateTime gameEpoch = new System.DateTime(2020, 3, 18);
+    private int CurrentTime => Mathf.FloorToInt((float)(System.DateTime.UtcNow - gameEpoch).TotalSeconds);
+
     public void TimeStep()
     {
-        int fullness = DataDump.Get<int>("LocalPetFullness") - 1;
-        if (fullness <= 0)
+        GrowthStage stage = (GrowthStage)DataDump.Get<int>("LocalPetGrowthStage");
+        switch (stage)
         {
-            // go to the die
-            DataDump.Set("LocalPetGrowthStage", (int)GrowthStage.Dead);
-            return;
+            case GrowthStage.Baby:
+            case GrowthStage.Juvi:
+                int fullness = DataDump.Get<int>("LocalPetFullness") - 1;
+                if (fullness <= 0)
+                {
+                    // go to the die
+                    StartCoroutine(Die());
+                    return;
+                }
+                if (fullness < FullnessTolerance / 2)
+                {
+                    // go to the complain
+                }
+                DataDump.Set("LocalPetFullness", fullness);
+                break;
         }
-        if (fullness < FullnessTolerance / 2)
+        
+        if (stage == GrowthStage.Baby && DataDump.Get<int>("LocalPetNextGrowthTime") < CurrentTime)
         {
-            // go to the complain
+            // go to the grow
+            StartCoroutine(Grow());
+        }
+
+        if (stage == GrowthStage.Dead && DataDump.Get<int>("LocalPetNextGrowthTime") < CurrentTime)
+        {
+            StartCoroutine(Sprout());
         }
     }
 
@@ -157,13 +219,55 @@ public class PetController : MonoBehaviour
         Juicer.ShakeCamera(1);
         yield return new WaitForSeconds(2);
         DataDump.Set("LocalPetGrowthStage", 2);
+        DataDump.Set("LocalPetFullness", InitialFullness);
+        DataDump.Set("LocalPetBerriesEaten", 0);
+        DataDump.Set("LocalPetCookiesEaten", 0);
+        DataDump.Set("LocalPetFishEaten", 0);
+        DataDump.Set("LocalPetHappiness", 0);
+        DataDump.Set("LocalPetAnnoyance", 0);
+        int nextGrowthTime = CurrentTime + (MinutesSpentAsChild * 60);
+        DataDump.Set("LocalPetNextGrowthTime", nextGrowthTime);
+        Juicer.ShakeCamera(3);
+    }
+
+    private IEnumerator Grow()
+    {
+        Juicer.ShakeCamera(1);
+        yield return new WaitForSeconds(2);
+        DataDump.Set("LocalPetGrowthStage", 3);
+        Juicer.ShakeCamera(3);
+    }
+
+    private IEnumerator Die()
+    {
+        CloseFoodMenu();
+        Juicer.ShakeCamera(1);
+        yield return new WaitForSeconds(2);
+        int nextGrowthTime = CurrentTime + (MinutesSpentDead * 60);
+        DataDump.Set("LocalPetNextGrowthTime", nextGrowthTime);
+        DataDump.Set("LocalPetGrowthStage", (int)GrowthStage.Dead);
+        Juicer.ShakeCamera(3);
+    }
+
+    private IEnumerator Sprout()
+    {
+        Juicer.ShakeCamera(1);
+        yield return new WaitForSeconds(2);
+        DataDump.Set("LocalPetGrowthStage", 5);
+        Juicer.ShakeCamera(3);
+    }
+
+    private IEnumerator Rebirth()
+    {
+        Juicer.ShakeCamera(1);
+        yield return new WaitForSeconds(2);
+        DataDump.Set("LocalPetGrowthStage", 0);
+        DataDump.Set("LocalPetPokes", 0);
         Juicer.ShakeCamera(3);
     }
 
     /// <summary>
-    /// If all stats within 10 of each other, random type
-    /// If some within 10, random type of the top 2
-    /// else just the top type
+    /// just the top type
     /// </summary>
     /// <returns></returns>
     public PetType CalculatePetType()
@@ -172,22 +276,12 @@ public class PetController : MonoBehaviour
         int cookies = DataDump.Get<int>("LocalPetCookiesEaten");
         int fish = DataDump.Get<int>("LocalPetFishEaten");
 
-        if (Mathf.Abs(berries - cookies) < 10 && Mathf.Abs(berries - fish) < 10 && Mathf.Abs(cookies - fish) < 10)
-        {
-            return (PetType)Random.Range(0, 4);
-        }
-        var sortedStats = new[] {
+        return new[] {
                 (PetType.Cute, berries), (PetType.Chubby, cookies), (PetType.Tough, fish)
             }
-            .OrderBy(stat => stat.Item2);
-        if (Mathf.Abs(berries - cookies) < 10 || Mathf.Abs(berries - fish) < 10 || Mathf.Abs(cookies - fish) < 10)
-        {
-            return sortedStats
-                .Skip(1)
-                .ToArray()[Random.Range(0, 2)]
-                .Item1;
-        }
-        return sortedStats.Last().Item1;
+            .OrderBy(stat => stat.Item2)
+            .Last()
+            .Item1;
     }
 
     public enum GrowthStage { Egg, Hatching, Baby, Juvi, Dead, Pheonix }

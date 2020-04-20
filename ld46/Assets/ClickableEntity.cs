@@ -29,6 +29,7 @@ public class ClickableEntity : MonoBehaviour
     public void Select() {
         isSelected = true;
         OnSelect.Invoke(this);
+        Juicer.Instance.PlaySelectSFX();
     }
     public void Deselect()
     {

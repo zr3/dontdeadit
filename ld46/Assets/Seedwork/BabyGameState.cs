@@ -9,9 +9,6 @@ public class BabyGameState : ScriptableObject, IState
 
     public void OnEnter() {
         Juicer.ShakeCamera(0.5f);
-        //var cam = GameObject.Find("CinemachineStateCamera/GameCam").GetComponent<CinemachineVirtualCamera>();
-        //cam.Follow = player.transform;
-        //cam.LookAt = player.transform;
     }
 
     public IEnumerator OnUpdate()

@@ -170,6 +170,7 @@ GameObject:
   m_Component:
   - component: {fileID: 724857630606103162}
   - component: {fileID: 724857630606103161}
+  - component: {fileID: 8637173123867778508}
   m_Layer: 0
   m_Name: outline
   m_TagString: Untagged
@@ -185,8 +186,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 724857630606103163}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
+  m_LocalPosition: {x: 0.008, y: 0.006, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 724857631787125167}
   m_RootOrder: 3
@@ -228,9 +229,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 90129e727e3e78647956d70b96df0051, type: 3}
-  m_Color: {r: 0.2735849, g: 0.2735849, b: 0.2735849, a: 1}
+  m_SortingOrder: 10
+  m_Sprite: {fileID: 21300000, guid: 5998fcbf73afbda4599f43eceb5f5abc, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -240,6 +241,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8637173123867778508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 724857630606103163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0d16214bd7506946bb9e2bb5d4263ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frames:
+  - {fileID: 21300000, guid: 5998fcbf73afbda4599f43eceb5f5abc, type: 3}
+  - {fileID: 21300000, guid: c1d81be211c415841a6a0796be37503d, type: 3}
+  rate: 0.5
 --- !u!1 &724857630774279264
 GameObject:
   m_ObjectHideFlags: 0
@@ -460,6 +477,11 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: ResourceEntity+OnResourceChangeEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  OnFailedPick:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: ResourceEntity+OnResourceChangeEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   OnRegrow:
     m_PersistentCalls:
       m_Calls:
@@ -476,10 +498,13 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: ResourceEntity+OnResourceChangeEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  OnPickClip: {fileID: 8300000, guid: 985eb4491320e144a93a68ac4dc52013, type: 3}
+  OnFailClip: {fileID: 8300000, guid: 64fa7c701059bb74b90c8530efa63142, type: 3}
   minAmount: 2
   maxAmount: 5
   minRegrowTime: 5
   maxRegrowTime: 10
+  currentAmount: 0
 --- !u!1 &724857631659140111
 GameObject:
   m_ObjectHideFlags: 0

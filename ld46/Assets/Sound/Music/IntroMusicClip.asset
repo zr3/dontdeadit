@@ -14,18 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Menu
   ClipLayers:
-  - Clip: {fileID: 8300000, guid: 72a870807b74ed7489c85a162389ea82, type: 3}
-  BPM: 120
+  - Clip: {fileID: 8300000, guid: caeaf42a8414cb74fa78a2945d538036, type: 3}
+  BPM: 65
   BeatsPerBar: 4
   Beginning:
     Bar: 1
     Beat: 1
   Endings:
-  - Bar: 5
+  - Bar: 3
     Beat: 1
   IntroEnd:
-    Bar: 3
+    Bar: 1
     Beat: 1
   VampEnd:
-    Bar: 4
+    Bar: 3
     Beat: 1

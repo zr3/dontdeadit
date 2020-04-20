@@ -18,6 +18,9 @@ public class ResourceEntity : MonoBehaviour
     public OnResourceChangeEvent OnFailedPick;
     public OnResourceChangeEvent OnRegrow;
 
+    public AudioClip OnPickClip;
+    public AudioClip OnFailClip;
+
     private string resourceName => Resource.ToString();
 
     [SerializeField]
@@ -47,6 +50,7 @@ public class ResourceEntity : MonoBehaviour
         if (currentAmount == 0)
         {
             OnFailedPick.Invoke(0);
+            Juicer.Instance.PlayNaturalClip(OnFailClip);
             return;
         }
 
@@ -58,7 +62,10 @@ public class ResourceEntity : MonoBehaviour
         OnPick.Invoke(currentAmount);
         currentAmount = 0;
         StartCoroutine(WaitToRegrow());
+        Juicer.Instance.PlayNaturalClip(OnPickClip);
+        Juicer.Instance.PlayPickSFX();
     }
+
     private void OnDestroy()
     {
         StopAllCoroutines();

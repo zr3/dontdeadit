@@ -17,4 +17,5 @@ public class PersistantGameState : ScriptableObject
     public int LocalPetBerriesEaten { get; set; }
     public int LocalPetCookiesEaten { get; set; }
     public int LocalPetFishEaten { get; set; }
+    public int LocalPetNextGrowthTime { get; set; }
 }

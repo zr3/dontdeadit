@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Introduction
   ClipLayers:
-  - Clip: {fileID: 8300000, guid: 485fc6e1c60df7842b64a173d5261628, type: 3}
-  BPM: 120
+  - Clip: {fileID: 8300000, guid: 46ed0a1368ab1fa448d8a3165c54d7ab, type: 3}
+  BPM: 65
   BeatsPerBar: 4
   Beginning:
     Bar: 1
@@ -33,9 +33,13 @@ MonoBehaviour:
     Beat: 1
   - Bar: 25
     Beat: 1
+  - Bar: 29
+    Beat: 1
+  - Bar: 33
+    Beat: 1
   IntroEnd:
     Bar: 1
     Beat: 1
   VampEnd:
-    Bar: 25
+    Bar: 33
     Beat: 1
