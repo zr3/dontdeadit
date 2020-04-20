@@ -502,9 +502,9 @@ MonoBehaviour:
   OnFailClip: {fileID: 8300000, guid: 64fa7c701059bb74b90c8530efa63142, type: 3}
   minAmount: 2
   maxAmount: 5
-  minRegrowTime: 5
-  maxRegrowTime: 10
-  currentAmount: 0
+  minRegrowTime: 60
+  maxRegrowTime: 90
+  currentAmount: 3
 --- !u!1 &724857631659140111
 GameObject:
   m_ObjectHideFlags: 0

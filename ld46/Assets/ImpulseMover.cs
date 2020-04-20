@@ -12,4 +12,14 @@ public class ImpulseMover : MonoBehaviour
     {
         transform.Translate(new Vector3(0, amount));
     }
+
+    public void GoHome()
+    {
+        transform.position = Vector3.zero;
+    }
+
+    public static void GoHomeHack()
+    {
+        GameObject.Find("nav")?.GetComponent<ImpulseMover>().GoHome();
+    }
 }

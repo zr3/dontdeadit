@@ -15,7 +15,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &9071626790434961027
 Transform:
   m_ObjectHideFlags: 0
@@ -530,11 +530,11 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   OnPickClip: {fileID: 8300000, guid: f7f6ee3387d124741894887e8e0d94d5, type: 3}
   OnFailClip: {fileID: 8300000, guid: 64fa7c701059bb74b90c8530efa63142, type: 3}
-  minAmount: 2
-  maxAmount: 5
-  minRegrowTime: 5
-  maxRegrowTime: 10
-  currentAmount: 0
+  minAmount: 5
+  maxAmount: 10
+  minRegrowTime: 60
+  maxRegrowTime: 90
+  currentAmount: 8
 --- !u!1 &3277615078652360729
 GameObject:
   m_ObjectHideFlags: 0

@@ -55,8 +55,11 @@ public class PetController : MonoBehaviour
         switch ((GrowthStage)newStage)
         {
             case GrowthStage.Egg:
+                ImpulseMover.GoHomeHack();
                 PhoenixStage.SetActive(false);
                 EggStage.SetActive(true);
+                MessageController.AddMessage("ah, an egg..");
+                MessageController.AddMessage("i wonder how it likes being poked");
                 break;
             case GrowthStage.Hatching:
                 StartCoroutine(Hatch());
@@ -66,6 +69,7 @@ public class PetController : MonoBehaviour
                 BabyStage.SetActive(true);
                 break;
             case GrowthStage.Juvi:
+                MusicBox.ChangeMusic(Song.Boss.ToInt());
                 BabyStage.SetActive(false);
                 JuviStage.SetActive(true);
                 var petType = CalculatePetType();
@@ -73,12 +77,15 @@ public class PetController : MonoBehaviour
                 {
                     case PetType.Cute:
                         JuviCuteStage.SetActive(true);
+                        MessageController.AddMessage("aw, it grew into a cute one!");
                         break;
                     case PetType.Chubby:
                         JuviChubbyStage.SetActive(true);
+                        MessageController.AddMessage("heh, it grew into a chubby one!");
                         break;
                     case PetType.Tough:
                         JuviToughStage.SetActive(true);
+                        MessageController.AddMessage("oo, it grew into a tough one!");
                         break;
                 }
                 break;
@@ -172,11 +179,24 @@ public class PetController : MonoBehaviour
                 {
                     // go to the die
                     StartCoroutine(Die());
+                    MessageController.AddMessage("oof");
+                    MessageController.AddMessage("it starved to death");
+                    MessageController.AddMessage("gather the food that's laying around");
+                    MessageController.AddMessage("make sure to click the pet");
+                    MessageController.AddMessage("and then the type of food");
+                    MessageController.AddMessage("it will be dead for a minute..");
+                    MessageController.AddMessage("but it always comes back");
                     return;
                 }
-                if (fullness < FullnessTolerance / 2)
+                if (fullness == FullnessTolerance / 2)
                 {
                     // go to the complain
+                    MessageController.AddMessage("it's getting hungry..");
+                }
+                if (fullness == 3)
+                {
+                    // go to the complain
+                    MessageController.AddMessage("it's about to starve!");
                 }
                 DataDump.Set("LocalPetFullness", fullness);
                 break;
@@ -232,8 +252,10 @@ public class PetController : MonoBehaviour
 
     private IEnumerator Grow()
     {
-        Juicer.ShakeCamera(1);
-        yield return new WaitForSeconds(2);
+        Juicer.ShakeCamera(0.5f);
+        MessageController.AddMessage("it's growing!!");
+        ImpulseMover.GoHomeHack();
+        yield return new WaitForSeconds(3);
         DataDump.Set("LocalPetGrowthStage", 3);
         Juicer.ShakeCamera(3);
     }
@@ -242,7 +264,9 @@ public class PetController : MonoBehaviour
     {
         CloseFoodMenu();
         Juicer.ShakeCamera(1);
-        yield return new WaitForSeconds(2);
+        MessageController.AddMessage("oh no...");
+        ImpulseMover.GoHomeHack();
+        yield return new WaitForSeconds(3);
         int nextGrowthTime = CurrentTime + (MinutesSpentDead * 60);
         DataDump.Set("LocalPetNextGrowthTime", nextGrowthTime);
         DataDump.Set("LocalPetGrowthStage", (int)GrowthStage.Dead);
